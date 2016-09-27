@@ -1,0 +1,10 @@
+﻿1>------ Build started: Project: ConsoleApplication1, Configuration: Release Win32 ------
+1>  ConsoleApplication1.cpp
+1>  Generating code
+1>  2 of 3 functions (66.7%) were compiled, the rest were copied from previous compilation.
+1>    0 functions were new in current compilation
+1>    0 functions had inline decision re-evaluated but remain unchanged
+1>  Finished generating code
+1>  ConsoleApplication1.vcxproj -> C:\Users\Baxter\Documents\Visual Studio 2015\Projects\ConsoleApplication1\Release\ConsoleApplication1.exe
+1>  ConsoleApplication1.vcxproj -> C:\Users\Baxter\Documents\Visual Studio 2015\Projects\ConsoleApplication1\Release\ConsoleApplication1.pdb (Full PDB)
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
