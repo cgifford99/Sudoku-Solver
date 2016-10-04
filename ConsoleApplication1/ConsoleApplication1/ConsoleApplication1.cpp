@@ -17,8 +17,8 @@ public:
 	Board(){
 		/*
 		cout << "Enter difficulty: Easy, Medium or Hard?";
-		cin >> din;
-		switch (din) {
+		cin >> diffIn;
+		switch (diffIn) {
 		case easy:
 			blanks = 36;
 			break;
@@ -32,17 +32,57 @@ public:
 	
 	void genBoard() {
 		for (int x = 0; x < 9; x++) {
+			cout << x << endl;
 			for (int y = 0; y < 9; y++) {
-				sBoard[x][y] = (1 + (rand() % 9));
-				var = find(sBoard.first, sBoard.last, 1);
+				if (sBoard[x][y] != 0) {
+					sBoard[x][y] = 0;
+				}
+				else { genBoard(); }
+				if (sBoard[x][y] == 0) {
+					makeNum(sBoard, numArr, x);
+				}
+			}
+			for (int i = 0; i < 9; i++) {
+				numArr[i] = { var1 };
+				var1++;
+			}
+			var1 = 1;
+			var = 10;
+		}
+	}
+
+	void makeNum(int arr[9][9], int arrN[9], int x) {
+		int randPos = 0 + (rand() % 8);
+		yPos = arrN[randPos];
+		if (yPos == 0) {
+			yPos = findNum(arrN);
+		}
+		arrN[randPos] = 0;
+		sBoard[x][yPos] = var; //yPos == 0 removes second row from being inputted
+		var--;
+	}
+
+	int findNum(int arrN[9]) {
+		int tempPos;
+		for (int y = 0; y < 9; y++) {
+			if (arrN[y] != 0) {
+				tempPos = arrN[y];
+				arrN[y] = 0;
+				return tempPos;
+			} else {
+				tempPos = 0;
 			}
 		}
 	}
 
+private:
+	int numArr[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int var = 9;
+	int var1 = 1;
+	int yPos;
+
 protected:
-	int din;
-	int blanks;
-	int var;
+	int diffIn;
 };
 
 class Sudoku : public Board {
