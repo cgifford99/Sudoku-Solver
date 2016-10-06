@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <string>
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
 	const enum diffInput { easy, medium, hard, };
 	
 	Board(){
-		/*
+		/* Temp comment. Difficulty option currently unnecessary.
 		cout << "Enter difficulty: Easy, Medium or Hard?";
 		cin >> diffIn;
 		switch (diffIn) {
@@ -31,54 +32,32 @@ public:
 	}
 	
 	void genBoard() {
-		for (int x = 0; x < 9; x++) {
-			cout << x << endl;
+		for (int i = 1; i <= 9; i++) { //Adds values to the vector
+			numVec.push_back(i);
+		}
+		for (int x = 0; x < 9; x++) { //Sets values for the board
 			for (int y = 0; y < 9; y++) {
-				if (sBoard[x][y] != 0) {
-					sBoard[x][y] = 0;
-				}
-				else { genBoard(); }
-				if (sBoard[x][y] == 0) {
-					makeNum(sBoard, numArr, x);
-				}
+				makeNum(sBoard, numVec, x);
 			}
-			for (int i = 0; i < 9; i++) {
-				numArr[i] = { var1 };
-				var1++;
-			}
-			var1 = 1;
-			var = 10;
+			var = 9;
 		}
 	}
 
-	void makeNum(int arr[9][9], int arrN[9], int x) {
+	void makeNum(int arr[9][9], vector<int> arrV, int x) { //Generates a random horizontal vector of numbers 1-9
 		int randPos = 0 + (rand() % 8);
-		yPos = arrN[randPos];
-		if (yPos == 0) {
-			yPos = findNum(arrN);
-		}
-		arrN[randPos] = 0;
-		sBoard[x][yPos] = var; //yPos == 0 removes second row from being inputted
+		yPos = arrV[randPos];
+		arrV.erase(arrV.begin()+randPos);
+		arrV.shrink_to_fit();
+		cout << "x= " << x << endl;
+		cout << "yPos= " << yPos << endl;
+		sBoard[x][yPos] = var;
+		cout << "sBoard= " << sBoard[x][yPos] << endl;
 		var--;
 	}
-
-	int findNum(int arrN[9]) {
-		int tempPos;
-		for (int y = 0; y < 9; y++) {
-			if (arrN[y] != 0) {
-				tempPos = arrN[y];
-				arrN[y] = 0;
-				return tempPos;
-			} else {
-				tempPos = 0;
-			}
-		}
-	}
-
+	
 private:
-	int numArr[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	vector<int> numVec;
 	int var = 9;
-	int var1 = 1;
 	int yPos;
 
 protected:
