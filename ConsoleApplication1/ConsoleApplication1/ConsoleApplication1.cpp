@@ -36,15 +36,12 @@ public:
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
 		for (int x = 0; x < 9; x++) { //Sets values for the board
-									  //printBoard(boardArg);
 			for (int y = 0; y < 9; y++) {
 				if (x == 0) {
 					genHoriz(sudoBoard, boardOfOct, x);
 				}
-				if (x == 1 || x == 2) {
-					genSquare(sudoBoard, boardOfNine, x, y);
-					resetVector(boardOfNine, 1);
-				}
+				genNumber(sudoBoard, boardOfNine, x, y);
+				resetVector(boardOfNine, 1);
 			}
 			resetVector(boardOfOct, 0);
 			incHoriz = 9;
@@ -54,25 +51,15 @@ public:
 	void genHoriz(int boardArg[9][9], vector<int> &vectorArg, int x) { //Generates a random horizontal vector of numbers 1-9
 		int randHzPos = 0 + (rand() % vectorArg.size()); //******MAGIC******//Finds a random position in the 1-9 list
 		horizYPos = vectorArg[randHzPos];
-		//cout << "randHzPos= " << randHzPos << endl; //Debug
-		//cout << vectorArg.capacity() << endl;
 		vectorArg.erase(vectorArg.begin() + randHzPos);
 		vectorArg.shrink_to_fit();
-		//printVector(vectorArg, vectorArg.size());
-		//cout << " x= " << x; //Debug
-		//cout << " y= " << horizYPos << endl; //Debug
 		boardArg[x][horizYPos] = incHoriz;
-		//cout << " sudoBoard= " << sudoBoard[x][horizYPos] << endl; //Debug
 		incHoriz--;
 	}
 
-	//void genVert(int boardArg[9][9], vector<int> &vectorArg, int x) {
-	//Doesn't do anything yet
-	//}
-
+	/*
 	void genSquare(int boardArg[9][9], vector<int> &vectorArg, int x, int y) {
 		int foundVal;
-		//int randSqPos = 0 + (rand() % 2);
 		int squarePos;
 		if (doOnce == 0) {
 			for (int i = 0; i <= 2; i++) {
@@ -91,13 +78,160 @@ public:
 		vectorArg.erase(vectorArg.begin() + randVecPos);
 		printVector(vectorArg, vectorArg.size());
 		vectorArg.shrink_to_fit();
-		boardArg[x][y] = squarePos; //random position in the square is bad <---------DO BETTER----------|
+		boardArg[x][y] = squarePos;
 		printBoard(boardArg);
+	}
+	*/
+
+	void genNumber(int board[9][9], vector<int> &vectorArg, int x, int y) {
+		searchSquare(board, vectorArg, x, y);
+		printVector(vectorArg, vectorArg.size());
+		//searchRow(board, vectorArg, x, y);
+		//searchCol(board, vectorArg, x, y);
+		//generate number
+	}
+
+	void searchSquare(int board[9][9], vector<int> &vectorArg, int x, int y) {
+		int squareVal;
+		int foundVal;
+		switch (x) {
+		case 0: case 1: case 2:
+			switch (y) {
+			case 0: case 1: case 2:
+				for (int a = 0; a <= 2; a++) {
+					for (int b = 0; b <= 2; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 3: case 4: case 5:
+				for (int a = 0; a <= 2; a++) {
+					for (int b = 3; b <= 5; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 6: case 7: case 8:
+				for (int a = 0; a <= 2; a++) {
+					for (int b = 6; b <= 8; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			}
+			break;
+		case 3: case 4: case 5:
+			switch (y) {
+			case 0: case 1: case 2:
+				for (int a = 3; a <= 5; a++) {
+					for (int b = 0; b <= 2; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 3: case 4: case 5:
+				for (int a = 3; a <= 5; a++) {
+					for (int b = 3; b <= 5; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 6: case 7: case 8:
+				for (int a = 3; a <= 5; a++) {
+					for (int b = 6; b <= 8; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			}
+			break;
+		case 6: case 7: case 8:
+			switch (y) {
+			case 0: case 1: case 2:
+				for (int a = 6; a <= 8; a++) {
+					for (int b = 0; b <= 2; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 3: case 4: case 5:
+				for (int a = 6; a <= 8; a++) {
+					for (int b = 3; b <= 5; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			case 6: case 7: case 8:
+				for (int a = 6; a <= 8; a++) {
+					for (int b = 6; b <= 8; b++) {
+						squareVal = board[a][b];
+						foundVal = findValVec(vectorArg, squareVal, vectorArg.size());
+						vectorArg.erase(vectorArg.begin() + foundVal);
+						cout << "x= " << x << endl;
+						cout << "y= " << y << endl;
+						printVector(vectorArg, vectorArg.size());
+						vectorArg.shrink_to_fit();
+					}
+				}
+				break;
+			}
+			break;
+		}
 	}
 
 	int findValVec(vector<int> &vectorArg, int vecValue, size_t vecSize) {
+		vecSize -= 1;
 		for (int i = 0; i <= vecSize; i++) {
 			if (vectorArg[i] == vecValue) {
+				cout << i << endl;
 				return i;
 			}
 		}
