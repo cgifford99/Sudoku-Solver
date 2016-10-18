@@ -11,101 +11,171 @@ using namespace std;
 
 class Board {
 public:
-	//int sizeX;
-	//int sizeY;
-	//const enum diffInput { easy, medium, hard, };
 
 	Board() {
 		resetVector(horizVec, 0);
 		resetVector(remainNum, 1);
-		/* Temp comment. Difficulty option currently unnecessary.
-		cout << "Enter difficulty: Easy, Medium or Hard?";
-		cin >> diffIn;
-		switch (diffIn) {
-		case easy:
-		blanks = 36;
-		break;
-		case medium:
-		blanks = 45;
-		break;
-		case hard:
-		blanks = 54;
-		*/
 		genBoard(sudoBoard, remainNum, horizVec);
 		printBoard(sudoBoard);
 	}
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
-		for (int x = 0; x < 9; x++) { //Sets values for the board
-			for (int y = 0; y < 9; y++) {
-				if (x == 0) {
-					genHoriz(boardArg, boardOfOct, x);
+		for (int y = 0; y < 9; y++) { //Sets values for the board
+			for (int x = 0; x < 9; x++) {
+				if (y == 0) {
+					genHoriz(boardArg, boardOfOct, y);
 				}
-				if (x != 0) {
-					genNumber(boardArg, boardOfNine, x, y);
+				if (y != 0) {
+					generatedNum = genNumber(boardArg, boardOfNine, y, x);
+					boardArg[y][x] = generatedNum;
+					//good();
 					resetVector(boardOfNine, 1);
-				}
+				} 
 			}
+			printBoard(boardArg);
 			resetVector(boardOfOct, 0);
 			incHoriz = 9;
 		}
 	}
 
-	void genHoriz(int boardArg[9][9], vector<int> &vectorArg, int x) { //Generates a random horizontal vector of numbers 1-9
-		int randHzPos = 0 + (rand() % vectorArg.size()); //******MAGIC******//Finds a random position in the 1-9 list
-		horizYPos = vectorArg[randHzPos];
-		vectorArg.erase(vectorArg.begin() + randHzPos);
-		vectorArg.shrink_to_fit();
-		boardArg[x][horizYPos] = incHoriz;
+	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
+		int randHzPos = 0 + (rand() % vectorHoriz.size()); //******MAGIC******//Finds a random position in the 1-9 list
+		horizYPos = vectorHoriz[randHzPos];
+		vectorHoriz.erase(vectorHoriz.begin() + randHzPos);
+		vectorHoriz.shrink_to_fit();
+		boardArg[y][horizYPos] = incHoriz;
 		incHoriz--;
 	}
 
-	/*
-	void genSquare(int boardArg[9][9], vector<int> &vectorArg, int x, int y) {
-		int foundVal;
-		int squarePos;
-		if (doOnce == 0) {
-			for (int i = 0; i <= 2; i++) {
-				squarePos = boardArg[0][i];						//Ex. if position 0,0 equals 5, the number five is never used again in the square
-				cout << "Squarepos " << squarePos << endl;
-				foundVal = findValVec(vectorArg, squarePos, vectorArg.size());
-				cout << "Foundval " << foundVal << endl;
-				vectorArg.erase(vectorArg.begin() + foundVal); //Make sure the number is never used in the square again
-				printVector(vectorArg, vectorArg.size());
-			}
-			doOnce++;
+	int genNumber(int board[9][9], vector<int> &vectorNum, int y, int x) {
+		coordSquare(board, vectorNum, y, x);
+		coordRow(board, vectorNum, y, x);
+		coordCol(board, vectorNum, y, x);
+		int randPos = 0 + (rand() % vectorNum.size());
+		SHOW(vectorNum.size());
+		validNum = vectorNum[randPos];
+		vectorNum.erase(vectorNum.begin() + randPos);
+		vectorNum.shrink_to_fit();
+		return validNum;
+	}
+
+	void coordSquare(int board[9][9], vector<int> &vectorCoord, int y, int x) {
+		if (y <= 2 && y >= 0) {
+				if (x <= 2 && x >= 0) {
+					searchSquare(board, vectorCoord, 0, 2, 0, 2);
+				}
+				else if (x <= 5 && x >= 3) {
+					searchSquare(board, vectorCoord, 0, 2, 3, 5);
+				}
+				else if (x <= 8 && x >= 6) {
+					searchSquare(board, vectorCoord, 0, 2, 6, 8);
+				}
 		}
-		vectorArg.shrink_to_fit();
-		int randVecPos = 0 + (rand() % vectorArg.size());
-		squarePos = vectorArg[randVecPos];
-		vectorArg.erase(vectorArg.begin() + randVecPos);
-		printVector(vectorArg, vectorArg.size());
-		vectorArg.shrink_to_fit();
-		boardArg[x][y] = squarePos;
-		printBoard(boardArg);
+		else if (y <= 5 && y >= 3) {
+				if (x <= 2 && x >= 0) {
+					searchSquare(board, vectorCoord, 3, 5, 0, 2);
+				}
+				else if (x <= 5 && x >= 3) {
+					searchSquare(board, vectorCoord, 3, 5, 3, 5);
+				}
+				else if (x <= 8 && x >= 6) {
+					searchSquare(board, vectorCoord, 3, 5, 6, 8);
+				}
+		}
+		else if (y <= 8 && y >= 6) {
+				if (x <= 2 && x >= 0) {
+					searchSquare(board, vectorCoord, 6, 8, 0, 2);
+				}
+				else if (x <= 5 && x >= 3) {
+					searchSquare(board, vectorCoord, 6, 8, 3, 5);
+				}
+				else if (x <= 8 && x >= 6) {
+					searchSquare(board, vectorCoord, 6, 8, 6, 8);
+				}
+		}
 	}
-	*/
 
-	void genNumber(int board[9][9], vector<int> &vectorArg, int x, int y) {
-		searchSquare(board, vectorArg, x, y);
-		printVector(vectorArg, vectorArg.size());
-		//searchRow(board, vectorArg, x, y);
-		//searchCol(board, vectorArg, x, y);
-		//generate number
+	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) {
+		int rowVal;
+		int foundRowVal;
+		for (int r = 0; r < 9; r++) {
+			rowVal = board[y][r];
+			if (rowVal != 0) {
+				foundRowVal = findValVec(vectorRow, rowVal, vectorRow.size());
+				if (foundRowVal == vectorRow.size()) {
+					return;
+				}
+				else {
+					vectorRow.erase(vectorRow.begin() + foundRowVal);
+					vectorRow.shrink_to_fit();
+				}
+			}
+			else{
+				return;
+			}
+		}
 	}
 
-	void searchSquare(int board[9][9], vector<int> &vectorArg, int x, int y) {
+	void coordCol(int board[9][9], vector<int> &vectorCol, int y, int x) {
+		int colVal;
+		int foundColVal;
+		for (int r = 0; r < 8; r++) {
+			colVal = board[r][x];
+			if (colVal != 0) {
+				foundColVal = findValVec(vectorCol , colVal, vectorCol.size());
+				if(foundColVal == vectorCol.size()){
+					return;
+				}
+				else {
+					vectorCol.erase(vectorCol.begin() + foundColVal);
+					vectorCol.shrink_to_fit();
+				}
+			}
+			else {
+				return;
+			}
+		}
+	}
+
+	void searchSquare(int board[9][9], vector<int> &vectorSearch, int y1, int y2, int x1, int x2) {
 		int squareVal;
 		int foundVal;
-
+		for (int a = y1; a <= y2; a++) {
+			for (int b = x1; b <= x2; b++) {
+				squareVal = board[a][b];
+				if (squareVal != 0) {
+					foundVal = findSQUAREVec(vectorSearch, squareVal, vectorSearch.size());
+					vectorSearch.erase(vectorSearch.begin() + foundVal);
+					//printVector(vectorSearch, vectorSearch.size());
+					vectorSearch.shrink_to_fit();
+				}
+				else {
+					return;
+				}
+			}
+		}
 	}
 
 	int findValVec(vector<int> &vectorArg, int vecValue, size_t vecSize) {
 		vecSize -= 1;
 		for (int i = 0; i <= vecSize; i++) {
 			if (vectorArg[i] == vecValue) {
-				cout << i << endl;
 				return i;
+			}
+			else {
+				return vectorArg.size();
+			}
+		}
+	}
+
+	int findSQUAREVec(vector<int> &vectorArg, int vecValue, size_t vecSize) {
+		vecSize -= 1;
+		for (int i = 0; i <= vecSize; i++) {
+			if (vectorArg[i] == vecValue) {
+				return i;
+			}
+			else {
+				//return vectorArg.size();
 			}
 		}
 	}
@@ -146,6 +216,10 @@ public:
 		}
 		cout << endl;
 	}
+	
+	void good(){
+		cout << "-----------------------------------------Got here!----------------------------------------" << endl;
+	}
 
 private:
 	vector<int> horizVec;
@@ -153,6 +227,8 @@ private:
 	int incHoriz = 9;
 	int horizYPos;
 	int doOnce = 0;
+	int generatedNum;
+	int validNum;
 
 protected:
 	int sudoBoard[9][9];
