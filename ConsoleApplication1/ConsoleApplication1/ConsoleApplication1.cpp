@@ -28,11 +28,11 @@ public:
 				if (y != 0) {
 					generatedNum = genNumber(boardArg, boardOfNine, y, x);
 					boardArg[y][x] = generatedNum;
-					//good();
+					printBoard(boardArg);					
 					resetVector(boardOfNine, 1);
 				} 
 			}
-			printBoard(boardArg);
+			//printBoard(boardArg);
 			resetVector(boardOfOct, 0);
 			incHoriz = 9;
 		}
@@ -51,12 +51,21 @@ public:
 		coordSquare(board, vectorNum, y, x);
 		coordRow(board, vectorNum, y, x);
 		coordCol(board, vectorNum, y, x);
-		int randPos = 0 + (rand() % vectorNum.size());
-		SHOW(vectorNum.size());
-		validNum = vectorNum[randPos];
-		vectorNum.erase(vectorNum.begin() + randPos);
-		vectorNum.shrink_to_fit();
-		return validNum;
+		if (vectorNum.size() <= 1) {
+			//add another conditional here
+			for (int r = 0; r < 9; r++) {
+				board[y][r] = 0;
+			}
+			resetVector(vectorNum, 1);
+			genNumber(board, vectorNum, y, x);
+		}else{
+			int randPos = 0 + (rand() % vectorNum.size());
+			validNum = vectorNum[randPos];
+			vectorNum.erase(vectorNum.begin() + randPos);
+			vectorNum.shrink_to_fit();
+			printVector(vectorNum, vectorNum.size());
+			return validNum;
+		}
 	}
 
 	void coordSquare(int board[9][9], vector<int> &vectorCoord, int y, int x) {
@@ -95,7 +104,7 @@ public:
 		}
 	}
 
-	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) {
+	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) { //can't finish the for loop if its returning nothing so soon 
 		int rowVal;
 		int foundRowVal;
 		for (int r = 0; r < 9; r++) {
@@ -103,15 +112,15 @@ public:
 			if (rowVal != 0) {
 				foundRowVal = findValVec(vectorRow, rowVal, vectorRow.size());
 				if (foundRowVal == vectorRow.size()) {
-					return;
+					continue;
 				}
-				else {
+				else if(foundRowVal != vectorRow.size()){
 					vectorRow.erase(vectorRow.begin() + foundRowVal);
 					vectorRow.shrink_to_fit();
 				}
 			}
 			else{
-				return;
+				continue;
 			}
 		}
 	}
@@ -124,7 +133,7 @@ public:
 			if (colVal != 0) {
 				foundColVal = findValVec(vectorCol , colVal, vectorCol.size());
 				if(foundColVal == vectorCol.size()){
-					return;
+					continue;
 				}
 				else {
 					vectorCol.erase(vectorCol.begin() + foundColVal);
@@ -132,7 +141,7 @@ public:
 				}
 			}
 			else {
-				return;
+				continue;
 			}
 		}
 	}
@@ -156,14 +165,17 @@ public:
 		}
 	}
 
-	int findValVec(vector<int> &vectorArg, int vecValue, size_t vecSize) {
-		vecSize -= 1;
+	int findValVec(vector<int> &vectorROWCOL, int vecValue, size_t vecSize) {
+		vecSize--;
 		for (int i = 0; i <= vecSize; i++) {
-			if (vectorArg[i] == vecValue) {
+			if (vectorROWCOL[i] == vecValue) {
 				return i;
 			}
-			else {
-				return vectorArg.size();
+			else if(vectorROWCOL[i] != vecValue){
+				continue;
+			}
+			else if (vectorROWCOL[i] == vecSize) {
+				return vecSize;
 			}
 		}
 	}
@@ -173,9 +185,6 @@ public:
 		for (int i = 0; i <= vecSize; i++) {
 			if (vectorArg[i] == vecValue) {
 				return i;
-			}
-			else {
-				//return vectorArg.size();
 			}
 		}
 	}
