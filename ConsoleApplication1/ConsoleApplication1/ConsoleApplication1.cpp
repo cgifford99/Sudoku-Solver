@@ -20,22 +20,33 @@ public:
 	}
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
-		for (int y = 0; y < 9; y++) { //Sets values for the board
-			for (int x = 0; x < 9; x++) {
+		cout << "sbdhfjvkdf" << endl;
+		for (int y = savedY; y <= 8; y++) { //Sets values for the board
+			for (int x = 0; x <= 8; x++) {
 				if (y == 0) {
 					genHoriz(boardArg, boardOfOct, y);
 				}
 				if (y != 0) {
 					generatedNum = genNumber(boardArg, boardOfNine, y, x);
-					boardArg[y][x] = generatedNum;
-					printBoard(boardArg);					
-					resetVector(boardOfNine, 1);
-				} 
+					if (generatedNum != -1) {
+						boardArg[y][x] = generatedNum;
+						printBoard(boardArg);
+						resetVector(boardOfNine, 1);
+					}else if(generatedNum == -1){
+						resetVector(boardOfNine, 1);
+						savedY = y;
+						if (savedY < 8) {
+							genBoard(boardArg, boardOfNine, boardOfOct);
+						}else{
+							return;
+						}
+					}
+				}
 			}
-			//printBoard(boardArg);
 			resetVector(boardOfOct, 0);
 			incHoriz = 9;
 		}
+		good();
 	}
 
 	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
@@ -48,21 +59,27 @@ public:
 	}
 
 	int genNumber(int board[9][9], vector<int> &vectorNum, int y, int x) {
+		cout << "genNumber" << endl;
 		coordSquare(board, vectorNum, y, x);
 		coordRow(board, vectorNum, y, x);
 		coordCol(board, vectorNum, y, x);
-		if (vectorNum.size() <= 1) {
-			//add another conditional here
+		if (vectorNum.size() <= 0) {
 			for (int r = 0; r < 9; r++) {
 				board[y][r] = 0;
 			}
 			resetVector(vectorNum, 1);
 			genNumber(board, vectorNum, y, x);
+			cout << "neg" << endl;
+			return -1;
 		}else{
 			int randPos = 0 + (rand() % vectorNum.size());
+			cout << "Before: ";
+			printVector(vectorNum, vectorNum.size());
 			validNum = vectorNum[randPos];
+			//SHOW(randPos);
 			vectorNum.erase(vectorNum.begin() + randPos);
 			vectorNum.shrink_to_fit();
+			cout << "After: ";
 			printVector(vectorNum, vectorNum.size());
 			return validNum;
 		}
@@ -113,8 +130,9 @@ public:
 				foundRowVal = findValVec(vectorRow, rowVal, vectorRow.size());
 				if (foundRowVal == vectorRow.size()) {
 					continue;
-				}
-				else if(foundRowVal != vectorRow.size()){
+				}else if(foundRowVal == -1){
+					return;
+				}else if(foundRowVal != vectorRow.size()){
 					vectorRow.erase(vectorRow.begin() + foundRowVal);
 					vectorRow.shrink_to_fit();
 				}
@@ -134,8 +152,9 @@ public:
 				foundColVal = findValVec(vectorCol , colVal, vectorCol.size());
 				if(foundColVal == vectorCol.size()){
 					continue;
-				}
-				else {
+				}else if(foundColVal == -1){
+					return;
+				}else {
 					vectorCol.erase(vectorCol.begin() + foundColVal);
 					vectorCol.shrink_to_fit();
 				}
@@ -154,9 +173,13 @@ public:
 				squareVal = board[a][b];
 				if (squareVal != 0) {
 					foundVal = findSQUAREVec(vectorSearch, squareVal, vectorSearch.size());
-					vectorSearch.erase(vectorSearch.begin() + foundVal);
-					//printVector(vectorSearch, vectorSearch.size());
-					vectorSearch.shrink_to_fit();
+					if (foundVal == -1) {
+						return;
+					}else{
+						vectorSearch.erase(vectorSearch.begin() + foundVal);
+						//printVector(vectorSearch, vectorSearch.size());
+						vectorSearch.shrink_to_fit();
+					}
 				}
 				else {
 					return;
@@ -168,13 +191,16 @@ public:
 	int findValVec(vector<int> &vectorROWCOL, int vecValue, size_t vecSize) {
 		vecSize--;
 		for (int i = 0; i <= vecSize; i++) {
+			if (vectorROWCOL.size() == 0) {
+				return -1;
+			}
 			if (vectorROWCOL[i] == vecValue) {
 				return i;
 			}
 			else if(vectorROWCOL[i] != vecValue){
 				continue;
-			}
-			else if (vectorROWCOL[i] == vecSize) {
+			} 
+			else if (vectorROWCOL[i] == vecSize) { //Case for which the number is not found in the vector
 				return vecSize;
 			}
 		}
@@ -185,6 +211,9 @@ public:
 		for (int i = 0; i <= vecSize; i++) {
 			if (vectorArg[i] == vecValue) {
 				return i;
+			}
+			if (vectorArg.size() == 0) {
+				return -1;
 			}
 		}
 	}
@@ -238,6 +267,8 @@ private:
 	int doOnce = 0;
 	int generatedNum;
 	int validNum;
+	int savedX = 0;
+	int savedY = 0;
 
 protected:
 	int sudoBoard[9][9];
