@@ -16,18 +16,22 @@ public:
 		resetVector(horizVec, 0);
 		resetVector(remainNum, 1);
 		genBoard(sudoBoard, remainNum, horizVec);
+		good();
 		printBoard(sudoBoard);
 	}
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
-		cout << "sbdhfjvkdf" << endl;
+		SHOW(savedY);
 		for (int y = savedY; y <= 8; y++) { //Sets values for the board
+			cout << "y" << endl;
 			for (int x = 0; x <= 8; x++) {
+				cout << "x" << endl;
 				if (y == 0) {
 					genHoriz(boardArg, boardOfOct, y);
 				}
 				if (y != 0) {
 					generatedNum = genNumber(boardArg, boardOfNine, y, x);
+					SHOW(generatedNum);
 					if (generatedNum != -1) {
 						boardArg[y][x] = generatedNum;
 						printBoard(boardArg);
@@ -36,6 +40,8 @@ public:
 						resetVector(boardOfNine, 1);
 						savedY = y;
 						if (savedY < 8) {
+							SHOW(savedY);
+							good();
 							genBoard(boardArg, boardOfNine, boardOfOct);
 						}else{
 							return;
@@ -43,10 +49,19 @@ public:
 					}
 				}
 			}
+			boolZeroTest = anyZeros(boardArg);
+			if (boolZeroTest == false) {
+				cout << "Continue" << endl;
+				continue;
+			}else if (boolZeroTest == true){
+				cout << "return" << endl;
+				savedY = 0;
+				return;
+			}
 			resetVector(boardOfOct, 0);
 			incHoriz = 9;
 		}
-		good();
+		return;
 	}
 
 	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
@@ -56,10 +71,22 @@ public:
 		vectorHoriz.shrink_to_fit();
 		boardArg[y][horizYPos] = incHoriz;
 		incHoriz--;
+	}  
+
+	bool anyZeros(int zeroBoard[9][9]) {
+		cout << "Checking..." << endl;
+		bool zeroBool = true;
+		for (int y = 0; y < 9; y++) {
+			for (int x = 0; x < 9; x++) {
+				if (zeroBoard[y][x] == 0) {
+					zeroBool = false;
+				}
+			}
+		}
+		return zeroBool;
 	}
 
 	int genNumber(int board[9][9], vector<int> &vectorNum, int y, int x) {
-		cout << "genNumber" << endl;
 		coordSquare(board, vectorNum, y, x);
 		coordRow(board, vectorNum, y, x);
 		coordCol(board, vectorNum, y, x);
@@ -67,9 +94,9 @@ public:
 			for (int r = 0; r < 9; r++) {
 				board[y][r] = 0;
 			}
+			cout << "Removing..." << endl;
 			resetVector(vectorNum, 1);
 			genNumber(board, vectorNum, y, x);
-			cout << "neg" << endl;
 			return -1;
 		}else{
 			int randPos = 0 + (rand() % vectorNum.size());
@@ -269,6 +296,7 @@ private:
 	int validNum;
 	int savedX = 0;
 	int savedY = 0;
+	bool boolZeroTest;
 
 protected:
 	int sudoBoard[9][9];
