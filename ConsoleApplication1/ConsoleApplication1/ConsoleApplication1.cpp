@@ -5,9 +5,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#define SHOW(a) std::cout << #a << ": " << (a) << std::endl
 //#include <algorithm>s
 using namespace std;
+#define SHOW(a) cout << #a << ": " << (a) << endl
 
 class Board {
 public:
@@ -16,52 +16,46 @@ public:
 		resetVector(horizVec, 0);
 		resetVector(remainNum, 1);
 		genBoard(sudoBoard, remainNum, horizVec);
-		good();
 		printBoard(sudoBoard);
 	}
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
-		SHOW(savedY);
-		for (int y = savedY; y <= 8; y++) { //Sets values for the board
-			cout << "y" << endl;
-			for (int x = 0; x <= 8; x++) {
-				cout << "x" << endl;
-				if (y == 0) {
-					genHoriz(boardArg, boardOfOct, y);
-				}
-				if (y != 0) {
-					generatedNum = genNumber(boardArg, boardOfNine, y, x);
-					SHOW(generatedNum);
-					if (generatedNum != -1) {
-						boardArg[y][x] = generatedNum;
-						printBoard(boardArg);
-						resetVector(boardOfNine, 1);
-					}else if(generatedNum == -1){
-						resetVector(boardOfNine, 1);
-						savedY = y;
-						if (savedY < 8) {
-							SHOW(savedY);
-							good();
-							genBoard(boardArg, boardOfNine, boardOfOct);
-						}else{
-							return;
+		boolZeroTest = anyZeros(boardArg);
+		//while (boolZeroTest == false) {
+			for (int y = savedY; y <= 8; y++) { //Sets values for the board
+				for (int x = 0; x <= 8; x++) {
+					if (boolZeroTest == false) {
+						if (y == 0) {
+							genHoriz(boardArg, boardOfOct, y);
+						}
+						else if (y != 0) {
+							generatedNum = genNumber(boardArg, boardOfNine, y, x);
+							if (generatedNum != -1) {
+								boardArg[y][x] = generatedNum;
+								resetVector(boardOfNine, 1);
+							}
+							else {
+								resetVector(boardOfNine, 1);
+								savedY = y;
+								if (boolZeroTest == false) {
+									genBoard(boardArg, boardOfNine, boardOfOct);
+								}
+							}
 						}
 					}
 				}
+				//printBoard(boardArg);
+				resetVector(boardOfOct, 0);
+				incHoriz = 9;
+				boolZeroTest = anyZeros(boardArg);
+				if (boolZeroTest == false) {
+					continue;
+				}
+				else if (boolZeroTest == true) {
+					return;
+				}
 			}
-			boolZeroTest = anyZeros(boardArg);
-			if (boolZeroTest == false) {
-				cout << "Continue" << endl;
-				continue;
-			}else if (boolZeroTest == true){
-				cout << "return" << endl;
-				savedY = 0;
-				return;
-			}
-			resetVector(boardOfOct, 0);
-			incHoriz = 9;
-		}
-		return;
+		//}
 	}
 
 	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
@@ -74,7 +68,6 @@ public:
 	}  
 
 	bool anyZeros(int zeroBoard[9][9]) {
-		cout << "Checking..." << endl;
 		bool zeroBool = true;
 		for (int y = 0; y < 9; y++) {
 			for (int x = 0; x < 9; x++) {
@@ -91,23 +84,19 @@ public:
 		coordRow(board, vectorNum, y, x);
 		coordCol(board, vectorNum, y, x);
 		if (vectorNum.size() <= 0) {
-			for (int r = 0; r < 9; r++) {
-				board[y][r] = 0;
+			if (boolZeroTest == false) {
+				for (int r = 0; r < 9; r++) {
+					board[y][r] = 0;
+				}
+				resetVector(vectorNum, 1);
+				genNumber(board, vectorNum, y, x);
+				return -1;
 			}
-			cout << "Removing..." << endl;
-			resetVector(vectorNum, 1);
-			genNumber(board, vectorNum, y, x);
-			return -1;
 		}else{
 			int randPos = 0 + (rand() % vectorNum.size());
-			cout << "Before: ";
-			printVector(vectorNum, vectorNum.size());
 			validNum = vectorNum[randPos];
-			//SHOW(randPos);
 			vectorNum.erase(vectorNum.begin() + randPos);
 			vectorNum.shrink_to_fit();
-			cout << "After: ";
-			printVector(vectorNum, vectorNum.size());
 			return validNum;
 		}
 	}
@@ -149,9 +138,9 @@ public:
 	}
 
 	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) { //can't finish the for loop if its returning nothing so soon 
-		int rowVal;
 		int foundRowVal;
 		for (int r = 0; r < 9; r++) {
+			int rowVal;
 			rowVal = board[y][r];
 			if (rowVal != 0) {
 				foundRowVal = findValVec(vectorRow, rowVal, vectorRow.size());
@@ -159,7 +148,7 @@ public:
 					continue;
 				}else if(foundRowVal == -1){
 					return;
-				}else if(foundRowVal != vectorRow.size()){
+				}else{
 					vectorRow.erase(vectorRow.begin() + foundRowVal);
 					vectorRow.shrink_to_fit();
 				}
@@ -171,9 +160,9 @@ public:
 	}
 
 	void coordCol(int board[9][9], vector<int> &vectorCol, int y, int x) {
-		int colVal;
 		int foundColVal;
 		for (int r = 0; r < 8; r++) {
+			int colVal;
 			colVal = board[r][x];
 			if (colVal != 0) {
 				foundColVal = findValVec(vectorCol , colVal, vectorCol.size());
@@ -224,10 +213,10 @@ public:
 			if (vectorROWCOL[i] == vecValue) {
 				return i;
 			}
-			else if(vectorROWCOL[i] != vecValue){
+			else if (vectorROWCOL[i] != vecValue) {
 				continue;
 			} 
-			else if (vectorROWCOL[i] == vecSize) { //Case for which the number is not found in the vector
+			if (vectorROWCOL[i] == vecSize) { //Case for which the number is not found in the vector
 				return vecSize;
 			}
 		}
@@ -281,17 +270,12 @@ public:
 		}
 		cout << endl;
 	}
-	
-	void good(){
-		cout << "-----------------------------------------Got here!----------------------------------------" << endl;
-	}
 
 private:
 	vector<int> horizVec;
 	vector<int> remainNum;
 	int incHoriz = 9;
 	int horizYPos;
-	int doOnce = 0;
 	int generatedNum;
 	int validNum;
 	int savedX = 0;
