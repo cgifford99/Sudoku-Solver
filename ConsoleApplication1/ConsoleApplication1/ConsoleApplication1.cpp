@@ -5,9 +5,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#define SHOW(a) std::cout << #a << ": " << (a) << std::endl
 //#include <algorithm>s
 using namespace std;
+#define SHOW(a) cout << #a << ": " << (a) << endl
 
 class Board {
 public:
@@ -21,6 +21,7 @@ public:
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
 		boolZeroTest = anyZeros(boardArg);
+<<<<<<< HEAD
 		while (boolZeroTest == false) {
 			SHOW(boolZeroTest);
 			for (int y = savedY; y <= 8; y++) { //Sets values for the board
@@ -45,6 +46,34 @@ public:
 						}
 					}
 				}
+=======
+		//while (boolZeroTest == false) {
+			for (int y = savedY; y <= 8; y++) { //Sets values for the board
+				for (int x = 0; x <= 8; x++) {
+					if (boolZeroTest == false) {
+						if (y == 0) {
+							genHoriz(boardArg, boardOfOct, y);
+						}
+						else if (y != 0) {
+							generatedNum = genNumber(boardArg, boardOfNine, y, x);
+							if (generatedNum != -1) {
+								boardArg[y][x] = generatedNum;
+								resetVector(boardOfNine, 1);
+							}
+							else {
+								resetVector(boardOfNine, 1);
+								savedY = y;
+								if (boolZeroTest == false) {
+									genBoard(boardArg, boardOfNine, boardOfOct);
+								}
+							}
+						}
+					}
+				}
+				//printBoard(boardArg);
+				resetVector(boardOfOct, 0);
+				incHoriz = 9;
+>>>>>>> origin/chris-branch
 				boolZeroTest = anyZeros(boardArg);
 				if (boolZeroTest == false) {
 					continue;
@@ -52,10 +81,15 @@ public:
 				else if (boolZeroTest == true) {
 					return;
 				}
+<<<<<<< HEAD
 				resetVector(boardOfOct, 0);
 				incHoriz = 9;
 			}
 		}
+=======
+			}
+		//}
+>>>>>>> origin/chris-branch
 	}
 
 	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
@@ -79,6 +113,7 @@ public:
 		return zeroBool;
 	}
 
+<<<<<<< HEAD
 	int genNumber(int board[9][9], vector<int> &vectorGenNum, int y, int x) {
 		find_CoordSquare(board, vectorGenNum, y, x);
 		search_Row(board, vectorGenNum, y, x);
@@ -106,6 +141,26 @@ public:
 			vectorGenNum.shrink_to_fit();
 			cout << "After: ";
 			printVector(vectorGenNum, vectorGenNum.size());
+=======
+	int genNumber(int board[9][9], vector<int> &vectorNum, int y, int x) {
+		coordSquare(board, vectorNum, y, x);
+		coordRow(board, vectorNum, y, x);
+		coordCol(board, vectorNum, y, x);
+		if (vectorNum.size() <= 0) {
+			if (boolZeroTest == false) {
+				for (int r = 0; r < 9; r++) {
+					board[y][r] = 0;
+				}
+				resetVector(vectorNum, 1);
+				genNumber(board, vectorNum, y, x);
+				return -1;
+			}
+		}else{
+			int randPos = 0 + (rand() % vectorNum.size());
+			validNum = vectorNum[randPos];
+			vectorNum.erase(vectorNum.begin() + randPos);
+			vectorNum.shrink_to_fit();
+>>>>>>> origin/chris-branch
 			return validNum;
 		}
 	}
@@ -146,10 +201,15 @@ public:
 		}
 	}
 
+<<<<<<< HEAD
 	void search_Row(int board[9][9], vector<int> &vectorRow, int y, int x) { 
 		int rowVal;
+=======
+	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) { //can't finish the for loop if its returning nothing so soon 
+>>>>>>> origin/chris-branch
 		int foundRowVal;
 		for (int r = 0; r < 9; r++) {
+			int rowVal;
 			rowVal = board[y][r];
 			if (rowVal != 0) {
 				foundRowVal = find_VecRowCol(vectorRow, rowVal, vectorRow.size());
@@ -157,7 +217,7 @@ public:
 					continue;
 				}else if(foundRowVal == -1){
 					return;
-				}else if(foundRowVal != vectorRow.size()){
+				}else{
 					vectorRow.erase(vectorRow.begin() + foundRowVal);
 					vectorRow.shrink_to_fit();
 				}
@@ -168,10 +228,15 @@ public:
 		}
 	}
 
+<<<<<<< HEAD
 	void search_Col(int board[9][9], vector<int> &vectorCol, int y, int x) {
 		int colVal;
+=======
+	void coordCol(int board[9][9], vector<int> &vectorCol, int y, int x) {
+>>>>>>> origin/chris-branch
 		int foundColVal;
 		for (int r = 0; r < 8; r++) {
+			int colVal;
 			colVal = board[r][x];
 			if (colVal != 0) {
 				foundColVal = find_VecRowCol(vectorCol , colVal, vectorCol.size());
@@ -222,10 +287,10 @@ public:
 			if (vectorROWCOL[i] == vecValue) {
 				return i;
 			}
-			else if(vectorROWCOL[i] != vecValue){
+			else if (vectorROWCOL[i] != vecValue) {
 				continue;
 			} 
-			else if (vectorROWCOL[i] == vecSize) { //Case for which the number is not found in the vector
+			if (vectorROWCOL[i] == vecSize) { //Case for which the number is not found in the vector
 				return vecSize;
 			}
 		}
@@ -279,17 +344,12 @@ public:
 		}
 		cout << endl;
 	}
-	
-	void good(){
-		cout << "-----------------------------------------Got here!----------------------------------------" << endl;
-	}
 
 private:
 	vector<int> horizVec;
 	vector<int> remainNum;
 	int incHoriz = 9;
 	int horizYPos;
-	int doOnce = 0;
 	int generatedNum;
 	int validNum;
 	int savedX = 0;
