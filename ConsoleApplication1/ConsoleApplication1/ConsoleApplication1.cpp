@@ -5,7 +5,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-//#include <algorithm>s
 using namespace std;
 #define SHOW(a) cout << #a << ": " << (a) << endl
 
@@ -20,33 +19,6 @@ public:
 	}
 
 	void genBoard(int boardArg[9][9], vector<int> &boardOfNine, vector<int> &boardOfOct) {
-		boolZeroTest = anyZeros(boardArg);
-<<<<<<< HEAD
-		while (boolZeroTest == false) {
-			SHOW(boolZeroTest);
-			for (int y = savedY; y <= 8; y++) { //Sets values for the board
-				for (int x = 0; x <= 8; x++) {
-					if (y == 0) {
-						genHoriz(boardArg, boardOfOct, y);
-					}
-					if (y != 0) {
-						generatedNum = genNumber(boardArg, boardOfNine, y, x);
-						if (generatedNum != -1 && generatedNum != -2) {
-							boardArg[y][x] = generatedNum;
-							printBoard(boardArg);
-							resetVector(boardOfNine, 1);
-						}
-						else if (generatedNum == -1) {
-							resetVector(boardOfNine, 1);
-							savedY = y;
-							genBoard(boardArg, boardOfNine, boardOfOct);
-						}
-						else if (generatedNum == -2) {
-							return;
-						}
-					}
-				}
-=======
 		//while (boolZeroTest == false) {
 			for (int y = savedY; y <= 8; y++) { //Sets values for the board
 				for (int x = 0; x <= 8; x++) {
@@ -70,26 +42,21 @@ public:
 						}
 					}
 				}
-				//printBoard(boardArg);
-				resetVector(boardOfOct, 0);
-				incHoriz = 9;
->>>>>>> origin/chris-branch
-				boolZeroTest = anyZeros(boardArg);
-				if (boolZeroTest == false) {
-					continue;
+					//printBoard(boardArg);
+					resetVector(boardOfOct, 0);
+					incHoriz = 9;
+
+					boolZeroTest = anyZeros(boardArg);
+					if (boolZeroTest == false) {
+						continue;
+					}
+					else if (boolZeroTest == true) {
+						return;
+					}
+					resetVector(boardOfOct, 0);
+					incHoriz = 9;
 				}
-				else if (boolZeroTest == true) {
-					return;
-				}
-<<<<<<< HEAD
-				resetVector(boardOfOct, 0);
-				incHoriz = 9;
-			}
-		}
-=======
-			}
 		//}
->>>>>>> origin/chris-branch
 	}
 
 	void genHoriz(int boardArg[9][9], vector<int> &vectorHoriz, int y) { //Generates a random horizontal vector of numbers 1-9
@@ -113,17 +80,12 @@ public:
 		return zeroBool;
 	}
 
-<<<<<<< HEAD
 	int genNumber(int board[9][9], vector<int> &vectorGenNum, int y, int x) {
 		find_CoordSquare(board, vectorGenNum, y, x);
 		search_Row(board, vectorGenNum, y, x);
 		search_Col(board, vectorGenNum, y, x);
 		if (vectorGenNum.size() <= 0) {
-			boolZeroTest = anyZeros(board);
-			if (boolZeroTest == true) {
-				return -2;
-			}
-			else if (boolZeroTest == false) {
+			if (boolZeroTest == false) {
 				for (int r = 0; r < 9; r++) {
 					board[y][r] = 0;
 				}
@@ -133,34 +95,9 @@ public:
 			}
 		}else{
 			int randPos = 0 + (rand() % vectorGenNum.size());
-			cout << "Before: ";
-			printVector(vectorGenNum, vectorGenNum.size());
 			validNum = vectorGenNum[randPos];
-			//SHOW(randPos);
 			vectorGenNum.erase(vectorGenNum.begin() + randPos);
 			vectorGenNum.shrink_to_fit();
-			cout << "After: ";
-			printVector(vectorGenNum, vectorGenNum.size());
-=======
-	int genNumber(int board[9][9], vector<int> &vectorNum, int y, int x) {
-		coordSquare(board, vectorNum, y, x);
-		coordRow(board, vectorNum, y, x);
-		coordCol(board, vectorNum, y, x);
-		if (vectorNum.size() <= 0) {
-			if (boolZeroTest == false) {
-				for (int r = 0; r < 9; r++) {
-					board[y][r] = 0;
-				}
-				resetVector(vectorNum, 1);
-				genNumber(board, vectorNum, y, x);
-				return -1;
-			}
-		}else{
-			int randPos = 0 + (rand() % vectorNum.size());
-			validNum = vectorNum[randPos];
-			vectorNum.erase(vectorNum.begin() + randPos);
-			vectorNum.shrink_to_fit();
->>>>>>> origin/chris-branch
 			return validNum;
 		}
 	}
@@ -201,12 +138,9 @@ public:
 		}
 	}
 
-<<<<<<< HEAD
+
 	void search_Row(int board[9][9], vector<int> &vectorRow, int y, int x) { 
 		int rowVal;
-=======
-	void coordRow(int board[9][9], vector<int> &vectorRow, int y, int x) { //can't finish the for loop if its returning nothing so soon 
->>>>>>> origin/chris-branch
 		int foundRowVal;
 		for (int r = 0; r < 9; r++) {
 			int rowVal;
@@ -228,12 +162,7 @@ public:
 		}
 	}
 
-<<<<<<< HEAD
 	void search_Col(int board[9][9], vector<int> &vectorCol, int y, int x) {
-		int colVal;
-=======
-	void coordCol(int board[9][9], vector<int> &vectorCol, int y, int x) {
->>>>>>> origin/chris-branch
 		int foundColVal;
 		for (int r = 0; r < 8; r++) {
 			int colVal;
@@ -358,7 +287,6 @@ private:
 
 protected:
 	int sudoBoard[9][9];
-	//int diffIn;
 };
 
 /*
