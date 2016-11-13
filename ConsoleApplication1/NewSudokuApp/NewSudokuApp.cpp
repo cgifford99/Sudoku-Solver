@@ -1,8 +1,8 @@
-// Sudoku Application.cpp : Defines the entry point for the application.
+// NewSudokuApp.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
-#include "Sudoku Application.h"
+#include "NewSudokuApp.h"
 
 #define MAX_LOADSTRING 100
 
@@ -29,7 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_SUDOKUAPPLICATION, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_NEWSUDOKUAPP, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
@@ -38,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_SUDOKUAPPLICATION));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_NEWSUDOKUAPP));
 
     MSG msg;
 
@@ -73,10 +73,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SUDOKUAPPLICATION));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NEWSUDOKUAPP));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_SUDOKUAPPLICATION);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_NEWSUDOKUAPP);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 

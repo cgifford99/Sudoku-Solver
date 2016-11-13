@@ -27,7 +27,7 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sudoku Application.h">
+    <ClInclude Include="NewSudokuApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,12 +35,12 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sudoku Application.cpp">
+    <ClCompile Include="NewSudokuApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Sudoku Application.rc">
+    <ResourceCompile Include="NewSudokuApp.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -48,7 +48,7 @@
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Sudoku Application.ico">
+    <Image Include="NewSudokuApp.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

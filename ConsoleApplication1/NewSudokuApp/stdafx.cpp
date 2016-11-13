@@ -1,5 +1,5 @@
 // stdafx.cpp : source file that includes just the standard includes
-// Sudoku Application.pch will be the pre-compiled header
+// NewSudokuApp.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
