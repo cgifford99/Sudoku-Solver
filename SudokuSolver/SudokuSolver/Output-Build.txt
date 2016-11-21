@@ -1,0 +1,4 @@
+﻿1>------ Build started: Project: SudokuSolver, Configuration: Debug Win32 ------
+1>  minimal.vcxproj -> C:\wxWidgets-3.1.0\samples\minimal\vc_mswud\SudokuSolver.exe
+1>  minimal.vcxproj -> vc_mswud\SudokuSolver.pdb (Full PDB)
+========== Build: 1 succeeded, 0 failed, 2 up-to-date, 0 skipped ==========
