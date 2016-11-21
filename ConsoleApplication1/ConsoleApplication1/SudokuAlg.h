@@ -1,4 +1,4 @@
-// Sudoku Solver.cpp : Defines the entry point for the console application.
+// SudokuAlg.h : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -28,7 +28,7 @@ public:
 						}
 						else if (y != 0) {
 							generatedNum = genNumber(boardArg, boardOfNine, y, x);
-							if (generatedNum != -1) {
+					if (generatedNum != -1) {
 								boardArg[y][x] = generatedNum;
 								resetVector(boardOfNine, 1);
 							}
@@ -42,18 +42,19 @@ public:
 						}
 					}
 				}
-				resetVector(boardOfOct, 0);
-				incHoriz = 9;
+					//printBoard(boardArg);
+					resetVector(boardOfOct, 0);
+					incHoriz = 9;
 
-				boolZeroTest = anyZeros(boardArg);
-				if (boolZeroTest == false) {
-					continue;
-				}
-				else if (boolZeroTest == true) {
-					return;
-				}
-				resetVector(boardOfOct, 0);
-				incHoriz = 9;
+					boolZeroTest = anyZeros(boardArg);
+					if (boolZeroTest == false) {
+						continue;
+					}
+					else if (boolZeroTest == true) {
+						return;
+					}
+					resetVector(boardOfOct, 0);
+					incHoriz = 9;
 				}
 		//}
 	}
@@ -295,7 +296,7 @@ public:
 */
 
 int main() {
-	Board nBoard;
+	//Board nBoard;
 	return 0;
 }
 
